@@ -1,7 +1,7 @@
 package main
 
 import (
-	"crypto/md5"
+	"crypto/sha256"
 	"math/rand"
 	"sync/atomic"
 	"time"
@@ -17,7 +17,7 @@ func worker(res chan Result, counter *int64, minLength, maxLength int, finished 
 	var randomSource = rand.New(rand.NewSource(time.Now().UnixNano()))
 	var matchedString string
 	var inputString string
-	md5hasher := md5.New()
+	md5hasher := sha256.New()
 	delta := maxLength - minLength
 	var randFunc func() string
 
