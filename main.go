@@ -21,8 +21,8 @@ var (
 )
 
 func init() {
-	cli.HelpFlag = cli.BoolFlag{Name: "help, h"}
-	cli.VersionFlag = cli.BoolFlag{Name: "version"}
+	cli.HelpFlag = &cli.BoolFlag{Name: "help, h"}
+	cli.VersionFlag = &cli.BoolFlag{Name: "version"}
 
 	cli.VersionPrinter = func(c *cli.Context) {
 		fmt.Fprintf(c.App.Writer, "%s\n", Version)
@@ -41,48 +41,14 @@ func main() {
 	app.Description = "Tool to bruteforce MD5 hashes that contain SQL injection strings capable of bypassing authentication when not properly santizied or generated (see PHP's MD5() function)."
 
 	app.Version = Version
-	app.Authors = []cli.Author{
-		cli.Author{
-			Name:  "Alex Levinson",
-			Email: "gen0cide.threats@gmail.com",
+	app.Flags = []cli.Flag{
+		&cli.StringFlag{
+		Name: "name, n",
+		Usage: "Print Hello World`",
 		},
 	}
-
 	app.Copyright = `(c) 2018 Alex Levinson`
-	app.Commands = []cli.Command{
-		cli.Command{
-			Name:      "bruteforce",
-			Usage:     "Start a bruteforce attack.",
-			UsageText: "hasherbasher bruteforce",
-			Flags: []cli.Flag{
-				cli.IntFlag{
-					Name:        "min-string-length",
-					Usage:       "Minimum length of generated input strings",
-					Value:       minStringLength,
-					Destination: &minStringLength,
-				},
-				cli.IntFlag{
-					Name:        "max-string-length",
-					Usage:       "Maximum length of generated input strings",
-					Value:       maxStringLength,
-					Destination: &maxStringLength,
-				},
-				cli.IntFlag{
-					Name:        "parallelism",
-					Usage:       "Number of parallel brute force workers",
-					Value:       parallelism,
-					Destination: &parallelism,
-				},
-				cli.IntFlag{
-					Name:        "interval",
-					Usage:       "Interval to print statistics in seconds",
-					Value:       interval,
-					Destination: &interval,
-				},
-			},
-			Action: runCommand,
-		},
-	}
+	app.Action = runCommand
 
 	err := app.Run(os.Args)
 	if err != nil {
