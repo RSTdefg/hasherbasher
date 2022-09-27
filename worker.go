@@ -36,7 +36,7 @@ func worker(res chan Result, counter *int64, minLength, maxLength int, finished 
 			return
 		}
 		md5hasher.Reset()
-		inputString = randFunc()
+		inputString = "bungle-"+randFunc()
 		md5hasher.Write([]byte(inputString))
 		result := md5hasher.Sum(nil)
 		if locateInjection(result) != -1 {
